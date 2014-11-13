@@ -1,5 +1,6 @@
-import scala.Array
+package streams
 
+import scala.Array
 
 final class Stream[T](val streamf: (T => Boolean) => Unit) {
 

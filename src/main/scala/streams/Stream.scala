@@ -7,7 +7,7 @@ import scala.collection.mutable.ArrayBuffer
 final class Stream[T: ClassTag](val streamf: (T => Boolean) => Unit) {
 
   def toArray(): Array[T] = 
-    fold ((a: ArrayBuffer[T], value: T) => a += value, new ArrayBuffer[T]).toArray
+    foldLeft(new ArrayBuffer[T])((a: ArrayBuffer[T], value: T) => a += value).toArray
 
   def filter(p: T => Boolean): Stream[T] =
     new Stream(iterf => streamf(value => !p(value) || iterf(value)))
@@ -63,18 +63,20 @@ final class Stream[T: ClassTag](val streamf: (T => Boolean) => Unit) {
 	true
     }))
 
-  def fold[A](f: (A, T) => A, a: A): A = {
+  def foldLeft[A](a: A)(op: (A, T) => A): A = {
     var acc = a
     streamf(value => {
-      acc = f(acc, value)
+      acc = op(acc, value)
       true
     })
     acc
   }
 
-  def size(): Long = fold ((a: Int, _) => a + 1 , 0)
+  def fold(z: T)(op: (T, T) => T): T = foldLeft(z)(op)
 
-  def sum[N >: T](implicit num: Numeric[N]): N = fold (num.plus, num.zero)
+  def size(): Long = foldLeft(0)((a: Int, _) => a + 1)
+
+  def sum[N >: T](implicit num: Numeric[N]): N = foldLeft(num.zero)(num.plus)
 }
 
 object Stream {

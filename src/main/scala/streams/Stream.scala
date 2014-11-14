@@ -1,26 +1,18 @@
 package streams
 
+import scala.reflect.ClassTag
 import scala.Array
+import scala.collection.mutable.ArrayBuffer
 
-final class Stream[T](val streamf: (T => Boolean) => Unit) {
+final class Stream[T: ClassTag](val streamf: (T => Boolean) => Unit) {
 
-  def ofArray(source: Array[T]): Stream[T] = {
-    val gen = (iterf: T => Boolean) => {
-      var counter = 0
-      var cont = true
-      val size = source.length
-      while (counter < size && !cont) {
-	cont = iterf(source(counter))
-	counter += 1
-      }
-    }
-    new Stream(gen)
-  }
+  def toArray(): Array[T] = 
+    fold ((a: ArrayBuffer[T], value: T) => a += value, new ArrayBuffer[T]).toArray
 
   def filter(p: T => Boolean): Stream[T] =
     new Stream(iterf => streamf(value => !p(value) || iterf(value)))
 
-  def map[R](f: T => R): Stream[R] = 
+  def map[R: ClassTag](f: T => R): Stream[R] = 
     new Stream(iterf => streamf(value => iterf(f(value))))
 
   def takeWhile(p: T => Boolean): Stream[T] = 
@@ -64,7 +56,7 @@ final class Stream[T](val streamf: (T => Boolean) => Unit) {
     }))
   }
 
-  def flatMap[R](f: T => Stream[R]): Stream[R] = 
+  def flatMap[R: ClassTag](f: T => Stream[R]): Stream[R] = 
     new Stream(iterf => streamf(value => {
 	val innerf = f(value).streamf
 	innerf(iterf)
@@ -83,4 +75,19 @@ final class Stream[T](val streamf: (T => Boolean) => Unit) {
   def size(): Long = fold ((a: Int, _) => a + 1 , 0)
 
   def sum[N >: T](implicit num: Numeric[N]): N = fold (num.plus, num.zero)
+}
+
+object Stream {
+  def apply[T: ClassTag](xs: Array[T]) = {
+    val gen = (iterf: T => Boolean) => {
+      var counter = 0
+      var cont = true
+      val size = xs.length
+      while (counter < size && cont) {
+	cont = iterf(xs(counter))
+	counter += 1
+      }
+    }
+    new Stream(gen)
+  }
 }

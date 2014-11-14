@@ -48,9 +48,9 @@ object StreamSpec extends Properties("Stream") {
     x == y
   }
 
-  property("skip") = forAll { (xs: Array[Int], n: Int) =>
-    var x = xs.drop(n).sum
-    var y = Stream(xs).skip(n).sum
-    x == y
+  property("flatMap") = forAll { (lines: Array[String]) =>
+    var x = lines.flatMap(line => line split "\\W+").toArray
+    var y = Stream(lines).flatMap(line => Stream(line split "\\W+")).toArray
+    (x: Seq[String]) == (y: Seq[String])
   }
 }

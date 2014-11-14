@@ -47,7 +47,7 @@ final class Stream[T: ClassTag](val streamf: (T => Boolean) => Unit) {
     var count = 0
     new Stream(iterf => streamf(value => {
       count += 1
-      if (count < n) {
+      if (count <= n) {
 	iterf(value)
       }
       else {

@@ -23,4 +23,34 @@ object StreamSpec extends Properties("Stream") {
     var y = Stream(xs).map(_*2).fold(0)(_+_)
     x == y
   }
+
+  property("sum") = forAll { (xs: Array[Int]) =>
+    var x = xs.map(_*2).sum
+    var y = Stream(xs).map(_*2).sum
+    x == y
+  }
+
+  property("size") = forAll { (xs: Array[Int]) =>
+    var x = xs.map(_*2).filter(_%2==0).size
+    var y = Stream(xs).map(_*2).filter(_%2==0).size
+    x == y
+  }
+
+  property("takeWhile") = forAll { (xs: Array[Int]) =>
+    var x = xs.takeWhile(_%2==0).size
+    var y = Stream(xs).takeWhile(_%2==0).size
+    x == y
+  }
+
+  property("take") = forAll { (xs: Array[Int], n: Int) =>
+    var x = xs.take(n).size
+    var y = Stream(xs).take(n).size
+    x == y
+  }
+
+  property("skip") = forAll { (xs: Array[Int], n: Int) =>
+    var x = xs.drop(n).sum
+    var y = Stream(xs).skip(n).sum
+    x == y
+  }
 }

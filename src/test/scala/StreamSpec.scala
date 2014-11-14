@@ -9,13 +9,13 @@ object StreamSpec extends Properties("Stream") {
   property("map") = forAll { (xs: Array[Int]) =>
     var x = xs.map(_*2)
     var y = Stream(xs).map(_*2).toArray()
-    (x: Seq[Int]) == (y: Seq[Int])
+    x sameElements y
   }
 
   property("filter") = forAll { (xs: Array[Int]) =>
     var x = xs.filter(_*2==0)
     var y = Stream(xs).filter(_*2==0).toArray()
-    (x: Seq[Int]) == (y: Seq[Int])
+    x sameElements y
   }
 
   property("fold") = forAll { (xs: Array[Int]) =>
@@ -51,6 +51,6 @@ object StreamSpec extends Properties("Stream") {
   property("flatMap") = forAll { (lines: Array[String]) =>
     var x = lines.flatMap(line => line split "\\W+").toArray
     var y = Stream(lines).flatMap(line => Stream(line split "\\W+")).toArray
-    (x: Seq[String]) == (y: Seq[String])
+    x sameElements y
   }
 }

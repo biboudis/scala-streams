@@ -1,5 +1,6 @@
 scala-streams
 =============
+[![Build Status](https://travis-ci.org/biboudis/scala-streams.svg)](https://travis-ci.org/biboudis/scala-streams)
 
 ### References
 * Inspired by our work on [Clash of the Lambdas](http://biboudis.github.io/clashofthelambdas/)

@@ -7,14 +7,10 @@ scalaVersion := "2.11.4"
 resolvers ++= Seq(Resolver.sonatypeRepo("releases"), Resolver.sonatypeRepo("snapshots"))
 
 libraryDependencies ++= Seq(
-  "org.scala-miniboxing.plugins" %% "miniboxing-runtime" % "0.4-SNAPSHOT",
   "org.scalacheck" %% "scalacheck" % "1.11.6" % "test",
   "org.scalatest" %% "scalatest" % "2.2.1" % "test",
   "org.scala-lang" % "scala-reflect" % "2.11.4"
 )
-
-addCompilerPlugin("org.scala-miniboxing.plugins" %%
-                  "miniboxing-plugin" % "0.4-SNAPSHOT")
 
 scalacOptions += "-optimize"
 

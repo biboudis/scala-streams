@@ -12,7 +12,7 @@ libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % "2.11.4"
 )
 
-scalacOptions += "-optimize"
+scalacOptions ++= Seq("-optimise")
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaCheck, "-maxSize", "5", "-minSuccessfulTests", "100", "-workers", "1", "-verbosity", "1")
 

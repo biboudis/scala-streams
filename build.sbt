@@ -8,7 +8,6 @@ resolvers ++= Seq(Resolver.sonatypeRepo("releases"), Resolver.sonatypeRepo("snap
 
 libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.11.6" % "test",
-  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
   "org.scala-lang" % "scala-reflect" % "2.11.4"
 )
 

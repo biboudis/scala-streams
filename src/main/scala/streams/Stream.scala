@@ -97,11 +97,14 @@ final class Stream[@specialized(Long) T: ClassTag](val streamf: (T => Boolean) =
     acc
   }
 
-  def fold(z: T)(op: (T, T) => T): T = foldLeft(z)(op)
+  def fold(z: T)(op: (T, T) => T): T = 
+    foldLeft(z)(op)
 
-  def size(): Long = foldLeft(0L)((a: Long, _) => a + 1L)
+  def size(): Long = 
+    foldLeft(0L)((a: Long, _) => a + 1L)
 
-  def sum[@specialized(Long) N >: T](implicit num: Numeric[N]): N = foldLeft(num.zero)(num.plus)
+  def sum[@specialized(Long) N >: T](implicit num: Numeric[N]): N = 
+    foldLeft(num.zero)(num.plus)
 }
 
 object Stream {

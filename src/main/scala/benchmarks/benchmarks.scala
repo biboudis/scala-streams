@@ -26,11 +26,11 @@ package benchmarks {
     
     @Setup
     def prepare() : Unit = {
-      N = 10000000
-      v = (0 until N).map(i => i.toLong % 1000).toArray
-      vHi = (0 until 1000000).map(i => i.toLong).toArray
-      vLo = (0 until 10).map(i => i.toLong).toArray
-      refs = (0 until N).map(i => new Ref(i)).toArray
+      N    = 10000000
+      v    = Array.tabulate(N)(i => i.toLong % 1000)
+      vHi  = Array.tabulate(1000000)(_.toLong)
+      vLo  = Array.tabulate(10)(_.toLong)
+      refs = Array.tabulate(N)(x=>new Ref(x))
     }
 
     // Baselines

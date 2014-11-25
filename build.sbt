@@ -13,7 +13,9 @@ libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % "2.11.4"
 )
 
-scalacOptions ++= Seq("-optimise")
+scalacOptions ++= Seq("-optimise",
+		      "-Yclosure-elim",
+		      "-Yinline")
 
 javaOptions in run ++= Seq("-Xmx3G", "-Xms3G", "-XX:+TieredCompilation", "-XX:+UseParallelGC")
 

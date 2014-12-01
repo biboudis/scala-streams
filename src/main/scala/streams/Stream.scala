@@ -24,28 +24,7 @@ object `package` {
   }
 }
 
-trait SpecializedArrayBuilder[@specialized(Long) A] {
-  def +=(a: A)
-  def result: Array[A]
-}
-
-trait LowPrioritySpecializedArrayBuilder {
-  implicit def defaultBuilder[A: ClassTag] = new SpecializedArrayBuilder[A] {
-    val builder = ArrayBuilder.make[A]
-    def +=(a: A) = builder += a
-    def result = builder.result
-  }
-}
-
-object SpecializedArrayBuilder extends LowPrioritySpecializedArrayBuilder {
-  implicit val longBuilder = new SpecializedArrayBuilder[Long] {
-    val builder = new ArrayBuilder.ofLong
-    def +=(a: Long) = builder += a
-    def result = builder.result
-  }
-}
-
-final class Stream[@specialized(Long) T: ClassTag](val streamf: (T => Boolean) => Unit) {
+final class Stream[@miniboxed T: ClassTag](val streamf: (T => Boolean) => Unit) {
 
   def toArray()(implicit builder: SpecializedArrayBuilder[T]): Array[T] = {
     foldLeft(builder)((b, v) => {b += v;b})
@@ -55,7 +34,7 @@ final class Stream[@specialized(Long) T: ClassTag](val streamf: (T => Boolean) =
   def filter(p: T => Boolean): Stream[T] =
     new Stream(iterf => streamf(value => !p(value) || iterf(value)))
 
-  def map[@specialized(Long) R: ClassTag](f: T => R): Stream[R] = 
+  def map[@miniboxed R: ClassTag](f: T => R): Stream[R] = 
     new Stream(iterf => streamf(value => iterf(f(value))))
 
   def takeWhile(p: T => Boolean): Stream[T] = 
@@ -99,14 +78,14 @@ final class Stream[@specialized(Long) T: ClassTag](val streamf: (T => Boolean) =
     }))
   }
 
-  def flatMap[@specialized(Long) R: ClassTag](f: T => Stream[R]): Stream[R] = 
+  def flatMap[@miniboxed R: ClassTag](f: T => Stream[R]): Stream[R] = 
     new Stream(iterf => streamf(value => {
 	val innerf = f(value).streamf
 	innerf(iterf)
 	true
     }))
 
-  def foldLeft[@specialized(Long) A](a: A)(op: (A, T) => A): A = {
+  def foldLeft[@miniboxed A](a: A)(op: (A, T) => A): A = {
     var acc = a
     streamf(value => {
       acc = op(acc, value)
@@ -121,12 +100,12 @@ final class Stream[@specialized(Long) T: ClassTag](val streamf: (T => Boolean) =
   def size(): Long = 
     foldLeft(0L)((a: Long, _) => a + 1L)
 
-  def sum[@specialized(Long) N >: T](implicit num: Numeric[N]): N = 
+  def sum[@miniboxed N >: T](implicit num: Numeric[N]): N = 
     foldLeft(num.zero)(num.plus)
 }
 
 object Stream {
-  @inline def apply[@specialized(Long) T: ClassTag](xs: Array[T]) = {
+  @inline def apply[@miniboxed T: ClassTag](xs: Array[T]) = {
     val gen = (iterf: T => Boolean) => {
       var counter = 0
       var cont = true

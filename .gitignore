@@ -17,3 +17,4 @@ project/plugins/project/
 .worksheet
 /bin
 /results.csv
+/src/test/scala/TestBenchmark.scala~

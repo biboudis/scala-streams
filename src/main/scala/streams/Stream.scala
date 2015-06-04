@@ -24,7 +24,7 @@ object `package` {
   }
 }
 
-final class Stream[T: ClassTag](val streamf: (T => Boolean) => Unit) {
+final class Stream[@specialized(Long) T: ClassTag](val streamf: (T => Boolean) => Unit) {
 
   def toArray()(implicit builder: SpecializedArrayBuilder[T]): Array[T] = {
     foldLeft(builder)((b, v) => {b += v;b})
@@ -105,7 +105,7 @@ final class Stream[T: ClassTag](val streamf: (T => Boolean) => Unit) {
 }
 
 object Stream {
-  @inline def apply[T: ClassTag](xs: Array[T]) = {
+  @inline def apply[@specialized(Long) T: ClassTag](xs: Array[T]) = {
     val gen = (iterf: T => Boolean) => {
       var counter = 0
       var cont = true

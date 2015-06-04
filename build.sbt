@@ -2,7 +2,7 @@ name := "scala-streams"
 
 version := "1.0"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.4"
 
 resolvers ++= Seq(Resolver.sonatypeRepo("releases"), 
 		  Resolver.sonatypeRepo("snapshots"))
@@ -35,8 +35,16 @@ ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
 // miniboxing:
 libraryDependencies += "org.scala-miniboxing.plugins" %% "miniboxing-runtime" % "0.4-M4" changing()
 
-addCompilerPlugin("org.scala-miniboxing.plugins" %% "miniboxing-plugin" % "0.4-M4" changing())
+// addCompilerPlugin("org.scala-miniboxing.plugins" %% "miniboxing-plugin" % "0.4-M4" changing())
 
-scalacOptions ++= Seq("-P:minibox:warn", 
-		      "-P:minibox:mark-all", 
-		      "-P:minibox:Yrewire-functionX-application")
+// Generic
+// scalacOptions ++= Seq("-no-specialization")
+
+// Specialized
+// no flags
+
+// Miniboxed
+// scalacOptions ++= Seq("-P:minibox:mark-all", "-P:minibox:Ykeep-functionX-values")
+
+// Miniboxed+functions
+// scalacOptions ++= Seq("-P:minibox:mark-all")

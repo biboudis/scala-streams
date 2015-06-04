@@ -18,3 +18,5 @@ project/plugins/project/
 /bin
 /results.csv
 /src/test/scala/TestBenchmark.scala~
+/src/main/scala/Benchmark.scala~
+/src/main/scala/TestBenchmark.scala~

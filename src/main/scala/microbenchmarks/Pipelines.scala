@@ -1,4 +1,4 @@
-package test
+package microbenchmarks
 
 import streams._
 
@@ -18,7 +18,7 @@ class Ref(var num: Int = 0)
 @BenchmarkMode(Array(Mode.AverageTime))
 @State(Scope.Thread)
 @Fork(1)
-class TestBenchmark {
+class Pipelines {
   var N : Int = _
   var v : Array[Long] = _
   var vHi : Array[Long] = _

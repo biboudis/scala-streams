@@ -1,3 +1,5 @@
+import JmhKeys._
+
 name := "scala-streams"
 
 version := "1.0"
@@ -20,7 +22,7 @@ scalacOptions ++= Seq("-optimise",
 
 // javaOptions in run ++= Seq("-Xmx3G", "-Xms3G", "-XX:+TieredCompilation", "-XX:+UseParallelGC")
 
-enablePlugins(JmhPlugin)
+jmhSettings
 
 javaOptions in run ++= Seq("-Xms2G")
 

@@ -31,18 +31,12 @@ object MyBuild extends Build {
     resolvers += Resolver.sonatypeRepo("releases"),
     libraryDependencies += "org.scala-miniboxing.plugins" %% "miniboxing-runtime" % "0.4-SNAPSHOT" changing(),
     addCompilerPlugin("org.scala-miniboxing.plugins" %% "miniboxing-plugin" % "0.4-SNAPSHOT" changing()),
-    scalacOptions ++= Seq()
+    scalacOptions ++= Seq("-P:minibox:mark-all")
   )
 
-  lazy val miniboxed = Project(
-    "streams-miniboxed",
-    file("miniboxed"),
-    settings = defaultSettings ++ miniboxingSettings
-  ).enablePlugins(JmhPlugin)
-
-  lazy val erased = Project(
-    "streams-erased",
-    file("erased"),
-    settings = defaultSettings
-  ).enablePlugins(JmhPlugin)
+  lazy val root: Project = Project(
+    "root",
+    file(".")
+    // settings = defaultSettings ++ miniboxingSettings
+  ) enablePlugins(JmhPlugin)
 }

@@ -12,8 +12,6 @@ import org.openjdk.jmh.annotations.Fork
 import org.openjdk.jmh.annotations.OutputTimeUnit
 import java.util.concurrent.TimeUnit
 
-class Ref(var num: Int = 0)
-
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @BenchmarkMode(Array(Mode.AverageTime))
 @State(Scope.Thread)
@@ -23,7 +21,6 @@ class Pipelines {
   var v : Array[Long] = _
   var vHi : Array[Long] = _
   var vLo : Array[Long] = _
-  var refs : Array[Ref] = _
   
   @Setup
   def prepare() : Unit = {
@@ -31,7 +28,6 @@ class Pipelines {
     v    = Array.tabulate(N)(i => i.toLong % 1000)
     vHi  = Array.tabulate(1000000)(_.toLong)
     vLo  = Array.tabulate(10)(_.toLong)
-    refs = Array.tabulate(N)(x=>new Ref(x))
   }
 
   // Baselines
@@ -84,18 +80,6 @@ class Pipelines {
     sum
   }
 
-  @Benchmark
-  def baseline_ref () : Long = {
-    var i=0
-    var count=0
-    while (i < refs.length) {
-      if (refs(i).num % 5 == 0 && refs(i).num % 7 == 0)
-	count += 1
-      i += 1
-    }
-    count
-  }
-
   // Scala Views
   @Benchmark
   def views_sum () : Long = {
@@ -133,16 +117,6 @@ class Pipelines {
     sum
   }
 
-  @Benchmark
-  def views_ref () : Long = {
-    val res : Long = refs
-      .view
-      .filter(_.num % 5 == 0)
-      .filter(_.num % 7 == 0)
-      .size
-    res
-  }
-
   // Streams
   @Benchmark
   def streams_sum () : Long = {
@@ -174,14 +148,5 @@ class Pipelines {
       .flatMap(d => Stream(vLo).map (dp => dp * d))
       .sum
     sum
-  }
-
-  @Benchmark
-  def streams_ref () : Long = {
-    val res : Long = Stream(refs)
-      .filter(_.num % 5 == 0)
-      .filter(_.num % 7 == 0)
-      .size
-    res
   }
 }

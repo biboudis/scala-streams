@@ -37,5 +37,5 @@ addCompilerPlugin("org.scala-miniboxing.plugins" %% "miniboxing-plugin" % "0.4-M
 // Miniboxed
 // scalacOptions ++= Seq("-P:minibox:mark-all", "-P:minibox:Ykeep-functionX-values")
 
-// Miniboxed+functions
+// Miniboxed + functions
 scalacOptions ++= Seq("-P:minibox:mark-all")

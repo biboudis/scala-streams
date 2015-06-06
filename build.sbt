@@ -22,7 +22,7 @@ scalacOptions ++= Seq("-optimise",
 
 enablePlugins(JmhPlugin)
 
-javaOptions in run ++= Seq("-Xms2G")
+javaOptions in run ++= Seq("-Xms2G", "-Xmx2G")
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaCheck, 
 				      "-maxSize", "5", 
@@ -33,9 +33,9 @@ testOptions in Test += Tests.Argument(TestFrameworks.ScalaCheck,
 ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
 
 // miniboxing:
-libraryDependencies += "org.scala-miniboxing.plugins" %% "miniboxing-runtime" % "0.4-M4" changing()
+libraryDependencies += "org.scala-miniboxing.plugins" %% "miniboxing-runtime" % "0.4-M4"
 
-// addCompilerPlugin("org.scala-miniboxing.plugins" %% "miniboxing-plugin" % "0.4-M4" changing())
+// addCompilerPlugin("org.scala-miniboxing.plugins" %% "miniboxing-plugin" % "0.4-M4")
 
 // Generic
 // scalacOptions ++= Seq("-no-specialization")

@@ -3,6 +3,7 @@
 ### Scala ###
 *.class
 *.log
+.cache*
 
 # sbt specific
 .cache
